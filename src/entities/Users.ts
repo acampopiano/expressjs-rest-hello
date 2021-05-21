@@ -18,10 +18,6 @@ export class Users extends BaseEntity{
   email: string;
 
   @Column()
-  password: string;
-
-  // @ManyToMany(() => Planet)
-  // @JoinTable()
-  // planets: Planet[];
+  password: string;  
   
 }
