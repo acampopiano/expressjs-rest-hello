@@ -1,6 +1,7 @@
 import { Request, Response } from 'express'
 import { getRepository } from 'typeorm'  // getRepository"  traer una tabla de la base de datos asociada al objeto
 import { Users } from './entities/Users'
+import { Todos } from './entities/Todos'
 import { Exception } from './utils'
 
 export const createUser = async (req: Request, res:Response): Promise<Response> =>{
@@ -34,17 +35,17 @@ export const createTodo = async (req: Request, res:Response): Promise<Response> 
 	if(!req.body.email) throw new Exception("Please provide an email")
 	if(!req.body.password) throw new Exception("Please provide a password")
 
-	const userRepo = getRepository(Users)
+	const todoRepo = getRepository(Todos)
 	// fetch for any user with this email
-	const user = await userRepo.findOne({ where: {email: req.body.email }})
-	if(user) throw new Exception("Users already exists with this email")
+	const todo = await todoRepo.findOne({ where: {email: req.body.email }})
+	if(todo) throw new Exception("Users already exists with this email")
 
 	const newUser = getRepository(Users).create(req.body);  //Creo un usuario
-	const results = await getRepository(Users).save(newUser); //Grabo el nuevo usuario 
+	const results = await getRepository(Todos).save(newTodo); //Grabo el nuevo usuario 
 	return res.json(results);
 }
 
 export const getTodos = async (req: Request, res: Response): Promise<Response> =>{
-		const users = await getRepository(Users).find();
-		return res.json(users);
+		const todos = await getRepository(Todos).find();
+		return res.json(todos);
 }

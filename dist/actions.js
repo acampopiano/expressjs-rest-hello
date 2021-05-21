@@ -39,6 +39,7 @@ exports.__esModule = true;
 exports.getTodos = exports.createTodo = exports.getUsers = exports.createUser = void 0;
 var typeorm_1 = require("typeorm"); // getRepository"  traer una tabla de la base de datos asociada al objeto
 var Users_1 = require("./entities/Users");
+var Todos_1 = require("./entities/Todos");
 var utils_1 = require("./utils");
 var createUser = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var userRepo, user, newUser, results;
@@ -82,7 +83,7 @@ var getUsers = function (req, res) { return __awaiter(void 0, void 0, void 0, fu
 }); };
 exports.getUsers = getUsers;
 var createTodo = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var userRepo, user, newUser, results;
+    var todoRepo, todo, newUser, results;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -95,14 +96,14 @@ var createTodo = function (req, res) { return __awaiter(void 0, void 0, void 0, 
                     throw new utils_1.Exception("Please provide an email");
                 if (!req.body.password)
                     throw new utils_1.Exception("Please provide a password");
-                userRepo = typeorm_1.getRepository(Users_1.Users);
-                return [4 /*yield*/, userRepo.findOne({ where: { email: req.body.email } })];
+                todoRepo = typeorm_1.getRepository(Todos_1.Todos);
+                return [4 /*yield*/, todoRepo.findOne({ where: { email: req.body.email } })];
             case 1:
-                user = _a.sent();
-                if (user)
+                todo = _a.sent();
+                if (todo)
                     throw new utils_1.Exception("Users already exists with this email");
                 newUser = typeorm_1.getRepository(Users_1.Users).create(req.body);
-                return [4 /*yield*/, typeorm_1.getRepository(Users_1.Users).save(newUser)];
+                return [4 /*yield*/, typeorm_1.getRepository(Todos_1.Todos).save(newTodo)];
             case 2:
                 results = _a.sent();
                 return [2 /*return*/, res.json(results)];
@@ -111,13 +112,13 @@ var createTodo = function (req, res) { return __awaiter(void 0, void 0, void 0, 
 }); };
 exports.createTodo = createTodo;
 var getTodos = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var users;
+    var todos;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, typeorm_1.getRepository(Users_1.Users).find()];
+            case 0: return [4 /*yield*/, typeorm_1.getRepository(Todos_1.Todos).find()];
             case 1:
-                users = _a.sent();
-                return [2 /*return*/, res.json(users)];
+                todos = _a.sent();
+                return [2 /*return*/, res.json(todos)];
         }
     });
 }); };
