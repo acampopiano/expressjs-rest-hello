@@ -30,18 +30,11 @@ export const getUsers = async (req: Request, res: Response): Promise<Response> =
 export const createTodo = async (req: Request, res:Response): Promise<Response> =>{
 
 	// important validations to avoid ambiguos errors, the client needs to understand what went wrong
-	if(!req.body.first_name) throw new Exception("Please provide a first_name")
-	if(!req.body.last_name) throw new Exception("Please provide a last_name")
-	if(!req.body.email) throw new Exception("Please provide an email")
-	if(!req.body.password) throw new Exception("Please provide a password")
-
-	const todoRepo = getRepository(Todos)
-	// fetch for any user with this email
-	const todo = await todoRepo.findOne({ where: {email: req.body.email }})
-	if(todo) throw new Exception("Users already exists with this email")
-
-	const newUser = getRepository(Users).create(req.body);  //Creo un usuario
-	const results = await getRepository(Todos).save(newTodo); //Grabo el nuevo usuario 
+	if(!req.body.done) throw new Exception("Please provide if todo is done")
+	if(!req.body.usersid) throw new Exception("Please provide an user for todo list")
+	
+	const newTodo = getRepository(Todos).create(req.body);  //Creo una todo
+	const results = await getRepository(Todos).save(newTodo); //Grabo la todo
 	return res.json(results);
 }
 
