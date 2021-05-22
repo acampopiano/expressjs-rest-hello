@@ -34,7 +34,7 @@ export const createTodo = async (req: Request, res:Response): Promise<Response> 
 	if(!req.body.user_id) throw new Exception("Please provide an user for todo list")
     
     const user = await userRepo.findOne(req.body.user_id)
-    if(!user) throw new Exception("User don't exists with this id")       
+    if(!user) throw new Exception("User does not exist with this id")       
     
     const newTodo = getRepository(Todos).create({...req.body,user:user});  //Creo una todo
     const results = await getRepository(Todos).save(newTodo); //Grabo la todo    
@@ -46,4 +46,11 @@ export const getTodos = async (req: Request, res: Response): Promise<Response> =
                             .find({ relations: ["user"] });
         
 		return res.json(todos);
+}
+
+export const getUserId = async (req: Request, res:Response): Promise<Response> =>{
+    const userRepo = getRepository(User)
+    const user = await userRepo.findOne(req.params.id)
+	if(!user) throw new Exception("User does not exist")
+    return res.json(user);
 }

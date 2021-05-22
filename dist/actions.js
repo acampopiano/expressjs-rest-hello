@@ -47,7 +47,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-exports.getTodos = exports.createTodo = exports.getUsers = exports.createUser = void 0;
+exports.getUserId = exports.getTodos = exports.createTodo = exports.getUsers = exports.createUser = void 0;
 var typeorm_1 = require("typeorm"); // getRepository"  traer una tabla de la base de datos asociada al objeto
 var User_1 = require("./entities/User");
 var Todos_1 = require("./entities/Todos");
@@ -108,7 +108,7 @@ var createTodo = function (req, res) { return __awaiter(void 0, void 0, void 0, 
             case 1:
                 user = _a.sent();
                 if (!user)
-                    throw new utils_1.Exception("User don't exists with this id");
+                    throw new utils_1.Exception("User does not exist with this id");
                 newTodo = typeorm_1.getRepository(Todos_1.Todos).create(__assign(__assign({}, req.body), { user: user }));
                 return [4 /*yield*/, typeorm_1.getRepository(Todos_1.Todos).save(newTodo)];
             case 2:
@@ -131,3 +131,19 @@ var getTodos = function (req, res) { return __awaiter(void 0, void 0, void 0, fu
     });
 }); };
 exports.getTodos = getTodos;
+var getUserId = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var userRepo, user;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                userRepo = typeorm_1.getRepository(User_1.User);
+                return [4 /*yield*/, userRepo.findOne(req.params.id)];
+            case 1:
+                user = _a.sent();
+                if (!user)
+                    throw new utils_1.Exception("User does not exist");
+                return [2 /*return*/, res.json(user)];
+        }
+    });
+}); };
+exports.getUserId = getUserId;
