@@ -5,9 +5,9 @@ import {
 import { Todos } from './Todos';
 
 @Entity()
-export class Users extends BaseEntity{
+export class User extends BaseEntity{
   @PrimaryGeneratedColumn()
-  id: number;
+  user_id: number;
 
   @Column()
   first_name: string;
@@ -21,6 +21,6 @@ export class Users extends BaseEntity{
   @Column()
   password: string;  
   
-  @OneToMany(() => Todos, todos => todos.users)
+  @OneToMany(() => Todos, todos => todos.user)
   todos: Todos[];
 }

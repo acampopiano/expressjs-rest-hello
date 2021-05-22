@@ -1,19 +1,20 @@
 import {
     Entity, Column, PrimaryGeneratedColumn, ManyToOne,
-    BaseEntity, JoinTable
+    BaseEntity, JoinTable, JoinColumn, Timestamp
 } from 'typeorm';
-import { Users } from "./Users";
+import { User } from "./User";
 @Entity()
 export class Todos extends BaseEntity {
     @PrimaryGeneratedColumn()
-    id: number;
+    todo_id: number;
     @Column()
     done: Boolean;
-    @Column()
+    @Column('timestamp with time zone', { nullable: false, default: () => 'CURRENT_TIMESTAMP' })
     date_created: Date;
-    @Column()
+    @Column({nullable:true})
     date_modified: Date;
     
-    @ManyToOne(() => Users, users => users.todos)
-    users: Users;
+    @ManyToOne(() => User, user => user.todos)
+    @JoinColumn({ name: 'user_id' }) //aqui le pongo un nombre a la fk que hace la relacion con usuario, y no el que pone por default typeorm
+    user: User;
 }
