@@ -47,7 +47,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-exports.getUserId = exports.getTodos = exports.createTodo = exports.getUsers = exports.createUser = void 0;
+exports.delUserId = exports.getUserId = exports.getTodos = exports.createTodo = exports.getUsers = exports.createUser = void 0;
 var typeorm_1 = require("typeorm"); // getRepository"  traer una tabla de la base de datos asociada al objeto
 var User_1 = require("./entities/User");
 var Todos_1 = require("./entities/Todos");
@@ -147,3 +147,27 @@ var getUserId = function (req, res) { return __awaiter(void 0, void 0, void 0, f
     });
 }); };
 exports.getUserId = getUserId;
+var delUserId = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var userRepo, user, results;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                userRepo = typeorm_1.getRepository(User_1.User);
+                return [4 /*yield*/, userRepo.findOne(req.params.id)];
+            case 1:
+                user = _a.sent();
+                if (!user)
+                    throw new utils_1.Exception("User does not exist");
+                return [4 /*yield*/, typeorm_1.getRepository(User_1.User)["delete"](user)
+                        .then(function () {
+                        var response = { message: "User " + user + " deleted",
+                            state: true };
+                        return res.json(response);
+                    })];
+            case 2:
+                results = _a.sent();
+                return [2 /*return*/, res.json(results)];
+        }
+    });
+}); };
+exports.delUserId = delUserId;

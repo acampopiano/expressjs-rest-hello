@@ -54,3 +54,16 @@ export const getUserId = async (req: Request, res:Response): Promise<Response> =
 	if(!user) throw new Exception("User does not exist")
     return res.json(user);
 }
+
+export const delUserId = async (req: Request, res:Response): Promise<Response> =>{
+    const userRepo = getRepository(User)
+    const user = await userRepo.findOne(req.params.id)
+    if(!user) throw new Exception("User does not exist")
+    const results = await getRepository(User).delete(user) 
+        .then(() => {
+            let response = { message : "User " + user + " deleted",
+                            state   : true }        
+            return res.json(response);
+        })
+    return res.json(results);    
+}
