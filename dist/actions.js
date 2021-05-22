@@ -160,7 +160,8 @@ var delUserId = function (req, res) { return __awaiter(void 0, void 0, void 0, f
                     throw new utils_1.Exception("User does not exist");
                 return [4 /*yield*/, typeorm_1.getRepository(User_1.User)["delete"](user)
                         .then(function () {
-                        var response = { message: "User " + user + " deleted",
+                        var whiteSpace = " ";
+                        var response = { message: "User " + user.first_name.concat(whiteSpace, user.last_name) + " deleted",
                             state: true };
                         return res.json(response);
                     })];

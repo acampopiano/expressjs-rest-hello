@@ -61,7 +61,8 @@ export const delUserId = async (req: Request, res:Response): Promise<Response> =
     if(!user) throw new Exception("User does not exist")
     const results = await getRepository(User).delete(user) 
         .then(() => {
-            let response = { message : "User " + user + " deleted",
+            let whiteSpace = " ";
+            let response = { message : "User " + user.first_name.concat(whiteSpace,user.last_name) + " deleted",
                             state   : true }        
             return res.json(response);
         })

@@ -15,7 +15,8 @@ export class Todos extends BaseEntity {
     date_modified: Date;
     
     @ManyToOne(() => User, user => user.todos, {
-        cascade: true,
+        nullable: false,
+        onDelete: 'CASCADE',
     })
     @JoinColumn({ name: 'user_id' }) //aqui le pongo un nombre a la fk que hace la relacion con usuario, y no el que pone por default typeorm
     user: User;
