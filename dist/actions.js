@@ -1,4 +1,15 @@
 "use strict";
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -91,14 +102,14 @@ var createTodo = function (req, res) { return __awaiter(void 0, void 0, void 0, 
                 // important validations to avoid ambiguos errors, the client needs to understand what went wrong
                 if (!req.body.done)
                     throw new utils_1.Exception("Please provide if todo is done");
-                if (!req.body.userId)
+                if (!req.body.user_id)
                     throw new utils_1.Exception("Please provide an user for todo list");
-                return [4 /*yield*/, userRepo.findOne(req.body.userId)];
+                return [4 /*yield*/, userRepo.findOne(req.body.user_id)];
             case 1:
                 user = _a.sent();
                 if (!user)
                     throw new utils_1.Exception("User don't exists with this id");
-                newTodo = typeorm_1.getRepository(Todos_1.Todos).create(req.body);
+                newTodo = typeorm_1.getRepository(Todos_1.Todos).create(__assign(__assign({}, req.body), { user_id: req.body.user_id }));
                 return [4 /*yield*/, typeorm_1.getRepository(Todos_1.Todos).save(newTodo)];
             case 2:
                 results = _a.sent();

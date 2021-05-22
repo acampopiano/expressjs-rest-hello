@@ -31,12 +31,12 @@ export const createTodo = async (req: Request, res:Response): Promise<Response> 
     const userRepo = getRepository(User)
 	// important validations to avoid ambiguos errors, the client needs to understand what went wrong
 	if(!req.body.done) throw new Exception("Please provide if todo is done")
-	if(!req.body.userId) throw new Exception("Please provide an user for todo list")
+	if(!req.body.user_id) throw new Exception("Please provide an user for todo list")
     
-    const user = await userRepo.findOne(req.body.userId)
+    const user = await userRepo.findOne(req.body.user_id)
     if(!user) throw new Exception("User don't exists with this id")       
     
-    const newTodo = getRepository(Todos).create(req.body);  //Creo una todo
+    const newTodo = getRepository(Todos).create({...req.body,user_id:req.body.user_id});  //Creo una todo
 	const results = await getRepository(Todos).save(newTodo); //Grabo la todo
 	return res.json(results);
 }
