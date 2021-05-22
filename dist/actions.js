@@ -113,7 +113,6 @@ var createTodo = function (req, res) { return __awaiter(void 0, void 0, void 0, 
                 return [4 /*yield*/, typeorm_1.getRepository(Todos_1.Todos).save(newTodo)];
             case 2:
                 results = _a.sent();
-                console.log(newTodo);
                 return [2 /*return*/, res.json(results)];
         }
     });
@@ -123,7 +122,8 @@ var getTodos = function (req, res) { return __awaiter(void 0, void 0, void 0, fu
     var todos;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, typeorm_1.getRepository(Todos_1.Todos).find()];
+            case 0: return [4 /*yield*/, typeorm_1.getRepository(Todos_1.Todos)
+                    .find({ relations: ["user"] })];
             case 1:
                 todos = _a.sent();
                 return [2 /*return*/, res.json(todos)];

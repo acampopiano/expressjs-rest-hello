@@ -23,7 +23,7 @@ export const createUser = async (req: Request, res:Response): Promise<Response> 
 }
 
 export const getUsers = async (req: Request, res: Response): Promise<Response> =>{
-		const users = await getRepository(User).find();
+        const users = await getRepository(User).find();    
 		return res.json(users);
 }
 
@@ -37,12 +37,13 @@ export const createTodo = async (req: Request, res:Response): Promise<Response> 
     if(!user) throw new Exception("User don't exists with this id")       
     
     const newTodo = getRepository(Todos).create({...req.body,user:user});  //Creo una todo
-    const results = await getRepository(Todos).save(newTodo); //Grabo la todo
-    console.log(newTodo);
+    const results = await getRepository(Todos).save(newTodo); //Grabo la todo    
 	return res.json(results);
 }
 
 export const getTodos = async (req: Request, res: Response): Promise<Response> =>{
-		const todos = await getRepository(Todos).find();
+        const todos = await getRepository(Todos)                            
+                            .find({ relations: ["user"] });
+        
 		return res.json(todos);
 }
