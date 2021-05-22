@@ -109,10 +109,11 @@ var createTodo = function (req, res) { return __awaiter(void 0, void 0, void 0, 
                 user = _a.sent();
                 if (!user)
                     throw new utils_1.Exception("User don't exists with this id");
-                newTodo = typeorm_1.getRepository(Todos_1.Todos).create(__assign(__assign({}, req.body), { user_id: req.body.user_id }));
+                newTodo = typeorm_1.getRepository(Todos_1.Todos).create(__assign(__assign({}, req.body), { user: user }));
                 return [4 /*yield*/, typeorm_1.getRepository(Todos_1.Todos).save(newTodo)];
             case 2:
                 results = _a.sent();
+                console.log(newTodo);
                 return [2 /*return*/, res.json(results)];
         }
     });

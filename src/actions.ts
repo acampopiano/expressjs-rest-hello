@@ -36,8 +36,9 @@ export const createTodo = async (req: Request, res:Response): Promise<Response> 
     const user = await userRepo.findOne(req.body.user_id)
     if(!user) throw new Exception("User don't exists with this id")       
     
-    const newTodo = getRepository(Todos).create({...req.body,user_id:req.body.user_id});  //Creo una todo
-	const results = await getRepository(Todos).save(newTodo); //Grabo la todo
+    const newTodo = getRepository(Todos).create({...req.body,user:user});  //Creo una todo
+    const results = await getRepository(Todos).save(newTodo); //Grabo la todo
+    console.log(newTodo);
 	return res.json(results);
 }
 

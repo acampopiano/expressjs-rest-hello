@@ -49,7 +49,9 @@ var Todos = /** @class */ (function (_super) {
         __metadata("design:type", Date)
     ], Todos.prototype, "date_modified");
     __decorate([
-        typeorm_1.ManyToOne(function () { return User_1.User; }, function (user) { return user.todos; }),
+        typeorm_1.ManyToOne(function () { return User_1.User; }, function (user) { return user.todos; }, {
+            cascade: true
+        }),
         typeorm_1.JoinColumn({ name: 'user_id' }) //aqui le pongo un nombre a la fk que hace la relacion con usuario, y no el que pone por default typeorm
         ,
         __metadata("design:type", User_1.User)
