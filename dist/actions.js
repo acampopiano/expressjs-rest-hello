@@ -47,7 +47,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-exports.delUserId = exports.getUserId = exports.getTodos = exports.createTodo = exports.getUsers = exports.createUser = void 0;
+exports.updUserId = exports.delUserId = exports.getUserId = exports.getTodos = exports.createTodo = exports.getUsers = exports.createUser = void 0;
 var typeorm_1 = require("typeorm"); // getRepository"  traer una tabla de la base de datos asociada al objeto
 var User_1 = require("./entities/User");
 var Todos_1 = require("./entities/Todos");
@@ -172,3 +172,35 @@ var delUserId = function (req, res) { return __awaiter(void 0, void 0, void 0, f
     });
 }); };
 exports.delUserId = delUserId;
+var updUserId = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var userRepo, user, user2, results;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                userRepo = typeorm_1.getRepository(User_1.User);
+                return [4 /*yield*/, userRepo.findOne(req.params.id)];
+            case 1:
+                user = _a.sent();
+                if (!user)
+                    throw new utils_1.Exception("User does not exist");
+                if (!req.body.first_name)
+                    throw new utils_1.Exception("Please provide a first_name");
+                if (!req.body.last_name)
+                    throw new utils_1.Exception("Please provide a last_name");
+                if (!req.body.email)
+                    throw new utils_1.Exception("Please provide an email");
+                if (!req.body.password)
+                    throw new utils_1.Exception("Please provide a password");
+                return [4 /*yield*/, userRepo.findOne({ where: { user_id: !req.params.id, email: req.body.email } })];
+            case 2:
+                user2 = _a.sent();
+                if (user2)
+                    throw new utils_1.Exception("User already exists with this email");
+                return [4 /*yield*/, typeorm_1.getRepository(User_1.User).update(user, req.body)];
+            case 3:
+                results = _a.sent();
+                return [2 /*return*/, res.json(results)];
+        }
+    });
+}); };
+exports.updUserId = updUserId;

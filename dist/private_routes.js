@@ -40,4 +40,5 @@ router.get('/users', utils_1.safe(actions.getUsers));
 router.get('/todos', utils_1.safe(actions.getTodos));
 router.get('/users/:id', utils_1.safe(actions.getUserId));
 router["delete"]('/users/:id', utils_1.safe(actions.delUserId));
+router.put('/users/:id', utils_1.safe(actions.updUserId));
 exports["default"] = router;

@@ -68,3 +68,20 @@ export const delUserId = async (req: Request, res:Response): Promise<Response> =
         })
     return res.json(results);    
 }
+
+export const updUserId = async (req: Request, res:Response): Promise<Response> =>{
+    const userRepo = getRepository(User)
+    const user = await userRepo.findOne(req.params.id)
+    if(!user) throw new Exception("User does not exist")
+    
+    if(!req.body.first_name) throw new Exception("Please provide a first_name")
+	if(!req.body.last_name) throw new Exception("Please provide a last_name")
+	if(!req.body.email) throw new Exception("Please provide an email")
+	if(!req.body.password) throw new Exception("Please provide a password")
+
+    const user2 = await userRepo.findOne({ where: {user_id:!req.params.id, email: req.body.email }})
+	if(user2) throw new Exception("User already exists with this email")
+        
+	const results = await getRepository(User).update(user,req.body); 
+	return res.json(results);    
+}
