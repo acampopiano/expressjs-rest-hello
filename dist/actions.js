@@ -173,7 +173,7 @@ var delUserId = function (req, res) { return __awaiter(void 0, void 0, void 0, f
 }); };
 exports.delUserId = delUserId;
 var updUserId = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var userRepo, user, user2, results;
+    var userRepo, user, results;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -191,11 +191,6 @@ var updUserId = function (req, res) { return __awaiter(void 0, void 0, void 0, f
                     throw new utils_1.Exception("Please provide an email");
                 if (!req.body.password)
                     throw new utils_1.Exception("Please provide a password");
-                return [4 /*yield*/, userRepo.findOne({ where: { user_id: req.params.id, email: req.body.email } })];
-            case 2:
-                user2 = _a.sent();
-                if (user2)
-                    throw new utils_1.Exception("User already exists with this email");
                 results = userRepo.update(user, req.body);
                 return [2 /*return*/, res.json(results)];
         }
