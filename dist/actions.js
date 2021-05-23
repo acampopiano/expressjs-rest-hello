@@ -191,14 +191,12 @@ var updUserId = function (req, res) { return __awaiter(void 0, void 0, void 0, f
                     throw new utils_1.Exception("Please provide an email");
                 if (!req.body.password)
                     throw new utils_1.Exception("Please provide a password");
-                return [4 /*yield*/, userRepo.findOne({ where: { user_id: !req.params.id, email: req.body.email } })];
+                return [4 /*yield*/, userRepo.findOne({ where: { user_id: req.params.id, email: req.body.email } })];
             case 2:
                 user2 = _a.sent();
                 if (user2)
                     throw new utils_1.Exception("User already exists with this email");
-                return [4 /*yield*/, typeorm_1.getRepository(User_1.User).update(user, req.body)];
-            case 3:
-                results = _a.sent();
+                results = userRepo.update(user, req.body);
                 return [2 /*return*/, res.json(results)];
         }
     });

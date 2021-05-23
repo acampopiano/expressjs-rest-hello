@@ -79,9 +79,9 @@ export const updUserId = async (req: Request, res:Response): Promise<Response> =
 	if(!req.body.email) throw new Exception("Please provide an email")
 	if(!req.body.password) throw new Exception("Please provide a password")
 
-    const user2 = await userRepo.findOne({ where: {user_id:!req.params.id, email: req.body.email }})
+    const user2 = await userRepo.findOne({ where: {user_id:req.params.id, email: req.body.email }})
 	if(user2) throw new Exception("User already exists with this email")
         
-	const results = await getRepository(User).update(user,req.body); 
+	const results = userRepo.update(user,req.body); 
 	return res.json(results);    
 }
