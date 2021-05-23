@@ -227,8 +227,7 @@ var delTodoId = function (req, res) { return __awaiter(void 0, void 0, void 0, f
                 todo = _a.sent();
                 if (!todo.length)
                     throw new utils_1.Exception("Todo does not exist");
-                results = todoRepo.remove(todo)
-                    .then(function () {
+                results = todoRepo.remove(todo).then(function () {
                     var response = {
                         message: "Todo deleted",
                         state: true

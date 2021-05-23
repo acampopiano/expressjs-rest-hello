@@ -102,13 +102,12 @@ export const delTodoId = async (req: Request, res: Response): Promise<Response> 
     const todo = await todoRepo.find({relations: ["user"], where: { user: req.params.userid,todo_id: req.params.todoid}})
     if (!todo.length) throw new Exception("Todo does not exist")
     
-    const results = todoRepo.remove(todo)
-        .then(() => {            
+    const results = todoRepo.remove(todo).then(() => {            
             let response = {
                 message: "Todo deleted",
                 state: true
-            }
-            return res.json(response);
-        })
+            }      
+            return res.json(response);      
+    });
     return res.json(results);
 }
