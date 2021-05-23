@@ -30,6 +30,7 @@ export const getUsers = async (req: Request, res: Response): Promise<Response> =
 export const createTodo = async (req: Request, res: Response): Promise<Response> => {
     const userRepo = getRepository(User)
     // important validations to avoid ambiguos errors, the client needs to understand what went wrong
+    if (!req.body.description) throw new Exception("Please provide a description for todo")
     if (!req.body.done) throw new Exception("Please provide if todo is done")
     if (!req.body.user_id) throw new Exception("Please provide an user for todo list")
 
@@ -81,7 +82,7 @@ export const updUserId = async (req: Request, res: Response): Promise<Response> 
     if (!req.body.email) throw new Exception("Please provide an email")
     if (!req.body.password) throw new Exception("Please provide a password")
 
-    const results = userRepo.update(user, req.body)
+    const results = await userRepo.update(user, req.body)
         .then(() => {
             let response = {
                 message: "User updated!",
@@ -92,17 +93,18 @@ export const updUserId = async (req: Request, res: Response): Promise<Response> 
     return res.json(user);
 }
 
-export const delTodoId = async (req: Request, res: Response): Promise<Response> => {
+export const delTodoId = async (req: Request, res: Response): Promise<Response> => {    
     const todoRepo = getRepository(Todos)
-    const todo = await todoRepo.findOne(req.params.id)
+    const todo = await todoRepo.find({ relations: ["user"], where: { todo_id: req.params.todoid}})
     if (!todo) throw new Exception("Todo does not exist")
-    const results = todoRepo.delete(todo)
+    /*const results = todoRepo.delete(todo)
         .then(() => {            
             let response = {
                 message: "Todo deleted",
                 state: true
             }
             return res.json(response);
-        })
-    return res.json(results);
+        })*/
+
+    return res.json(todo);
 }

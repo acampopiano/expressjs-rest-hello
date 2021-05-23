@@ -38,6 +38,10 @@ var Todos = /** @class */ (function (_super) {
     ], Todos.prototype, "todo_id");
     __decorate([
         typeorm_1.Column(),
+        __metadata("design:type", String)
+    ], Todos.prototype, "description");
+    __decorate([
+        typeorm_1.Column(),
         __metadata("design:type", Boolean)
     ], Todos.prototype, "done");
     __decorate([

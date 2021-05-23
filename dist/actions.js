@@ -100,6 +100,8 @@ var createTodo = function (req, res) { return __awaiter(void 0, void 0, void 0, 
             case 0:
                 userRepo = typeorm_1.getRepository(User_1.User);
                 // important validations to avoid ambiguos errors, the client needs to understand what went wrong
+                if (!req.body.description)
+                    throw new utils_1.Exception("Please provide a description for todo");
                 if (!req.body.done)
                     throw new utils_1.Exception("Please provide if todo is done");
                 if (!req.body.user_id)
@@ -193,39 +195,41 @@ var updUserId = function (req, res) { return __awaiter(void 0, void 0, void 0, f
                     throw new utils_1.Exception("Please provide an email");
                 if (!req.body.password)
                     throw new utils_1.Exception("Please provide a password");
-                results = userRepo.update(user, req.body)
-                    .then(function () {
-                    var response = {
-                        message: "User updated!",
-                        state: true
-                    };
-                    return res.json(response);
-                });
+                return [4 /*yield*/, userRepo.update(user, req.body)
+                        .then(function () {
+                        var response = {
+                            message: "User updated!",
+                            state: true
+                        };
+                        return res.json(response);
+                    })];
+            case 2:
+                results = _a.sent();
                 return [2 /*return*/, res.json(user)];
         }
     });
 }); };
 exports.updUserId = updUserId;
 var delTodoId = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var todoRepo, todo, results;
+    var todoRepo, todo;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 todoRepo = typeorm_1.getRepository(Todos_1.Todos);
-                return [4 /*yield*/, todoRepo.findOne(req.params.id)];
+                return [4 /*yield*/, todoRepo.find({ relations: ["user"], where: { todo_id: req.params.todoid } })];
             case 1:
                 todo = _a.sent();
                 if (!todo)
                     throw new utils_1.Exception("Todo does not exist");
-                results = todoRepo["delete"](todo)
-                    .then(function () {
-                    var response = {
-                        message: "Todo deleted",
-                        state: true
-                    };
-                    return res.json(response);
-                });
-                return [2 /*return*/, res.json(results)];
+                /*const results = todoRepo.delete(todo)
+                    .then(() => {
+                        let response = {
+                            message: "Todo deleted",
+                            state: true
+                        }
+                        return res.json(response);
+                    })*/
+                return [2 /*return*/, res.json(todo)];
         }
     });
 }); };

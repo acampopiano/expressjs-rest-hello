@@ -8,6 +8,8 @@ export class Todos extends BaseEntity {
     @PrimaryGeneratedColumn()
     todo_id: number;
     @Column()
+    description: string;
+    @Column()
     done: Boolean;
     @Column('timestamp with time zone', { nullable: false, default: () => 'CURRENT_TIMESTAMP' })
     date_created: Date;
