@@ -211,25 +211,31 @@ var updUserId = function (req, res) { return __awaiter(void 0, void 0, void 0, f
 }); };
 exports.updUserId = updUserId;
 var delTodoId = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var todoRepo, todo;
+    var userRepo, user, todoRepo, todo, results;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                todoRepo = typeorm_1.getRepository(Todos_1.Todos);
-                return [4 /*yield*/, todoRepo.find({ relations: ["user"], where: { todo_id: req.params.todoid } })];
+                userRepo = typeorm_1.getRepository(User_1.User);
+                return [4 /*yield*/, userRepo.findOne(req.params.userid)];
             case 1:
+                user = _a.sent();
+                if (!user)
+                    throw new utils_1.Exception("User does not exist");
+                todoRepo = typeorm_1.getRepository(Todos_1.Todos);
+                return [4 /*yield*/, todoRepo.find({ relations: ["user"], where: { user: req.params.userid, todo_id: req.params.todoid } })];
+            case 2:
                 todo = _a.sent();
-                if (!todo)
+                if (!todo.length)
                     throw new utils_1.Exception("Todo does not exist");
-                /*const results = todoRepo.delete(todo)
-                    .then(() => {
-                        let response = {
-                            message: "Todo deleted",
-                            state: true
-                        }
-                        return res.json(response);
-                    })*/
-                return [2 /*return*/, res.json(todo)];
+                results = todoRepo.remove(todo)
+                    .then(function () {
+                    var response = {
+                        message: "Todo deleted",
+                        state: true
+                    };
+                    return res.json(response);
+                });
+                return [2 /*return*/, res.json(results)];
         }
     });
 }); };

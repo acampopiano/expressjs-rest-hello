@@ -94,17 +94,21 @@ export const updUserId = async (req: Request, res: Response): Promise<Response> 
 }
 
 export const delTodoId = async (req: Request, res: Response): Promise<Response> => {    
+    const userRepo = getRepository(User)
+    const user = await userRepo.findOne(req.params.userid)
+    if (!user) throw new Exception("User does not exist")
+
     const todoRepo = getRepository(Todos)
-    const todo = await todoRepo.find({ relations: ["user"], where: { todo_id: req.params.todoid}})
-    if (!todo) throw new Exception("Todo does not exist")
-    /*const results = todoRepo.delete(todo)
+    const todo = await todoRepo.find({relations: ["user"], where: { user: req.params.userid,todo_id: req.params.todoid}})
+    if (!todo.length) throw new Exception("Todo does not exist")
+    
+    const results = todoRepo.remove(todo)
         .then(() => {            
             let response = {
                 message: "Todo deleted",
                 state: true
             }
             return res.json(response);
-        })*/
-
-    return res.json(todo);
+        })
+    return res.json(results);
 }
