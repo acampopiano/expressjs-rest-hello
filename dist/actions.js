@@ -47,7 +47,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-exports.updUserId = exports.delUserId = exports.getUserId = exports.getTodos = exports.createTodo = exports.getUsers = exports.createUser = void 0;
+exports.delTodoId = exports.updUserId = exports.delUserId = exports.getUserId = exports.getTodos = exports.createTodo = exports.getUsers = exports.createUser = void 0;
 var typeorm_1 = require("typeorm"); // getRepository"  traer una tabla de la base de datos asociada al objeto
 var User_1 = require("./entities/User");
 var Todos_1 = require("./entities/Todos");
@@ -161,8 +161,10 @@ var delUserId = function (req, res) { return __awaiter(void 0, void 0, void 0, f
                 return [4 /*yield*/, typeorm_1.getRepository(User_1.User)["delete"](user)
                         .then(function () {
                         var whiteSpace = " ";
-                        var response = { message: "User " + user.first_name.concat(whiteSpace, user.last_name) + " deleted",
-                            state: true };
+                        var response = {
+                            message: "User " + user.first_name.concat(whiteSpace, user.last_name) + " deleted",
+                            state: true
+                        };
                         return res.json(response);
                     })];
             case 2:
@@ -191,9 +193,40 @@ var updUserId = function (req, res) { return __awaiter(void 0, void 0, void 0, f
                     throw new utils_1.Exception("Please provide an email");
                 if (!req.body.password)
                     throw new utils_1.Exception("Please provide a password");
-                results = userRepo.update(user, req.body);
-                return [2 /*return*/, res.json(results)];
+                results = userRepo.update(user, req.body)
+                    .then(function () {
+                    var response = {
+                        message: "User updated!",
+                        state: true
+                    };
+                    return res.json(response);
+                });
+                return [2 /*return*/, res.json(user)];
         }
     });
 }); };
 exports.updUserId = updUserId;
+var delTodoId = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var todoRepo, todo, results;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                todoRepo = typeorm_1.getRepository(Todos_1.Todos);
+                return [4 /*yield*/, todoRepo.findOne(req.params.id)];
+            case 1:
+                todo = _a.sent();
+                if (!todo)
+                    throw new utils_1.Exception("Todo does not exist");
+                results = todoRepo["delete"](todo)
+                    .then(function () {
+                    var response = {
+                        message: "Todo deleted",
+                        state: true
+                    };
+                    return res.json(response);
+                });
+                return [2 /*return*/, res.json(results)];
+        }
+    });
+}); };
+exports.delTodoId = delTodoId;
