@@ -3,7 +3,7 @@ import { getRepository } from 'typeorm'  // getRepository"  traer una tabla de l
 import { User } from './entities/User'
 import { Todos } from './entities/Todos'
 import { Exception } from './utils'
-
+import moment from 'moment';
 export const createUser = async (req: Request, res: Response): Promise<Response> => {
 
     // important validations to avoid ambiguos errors, the client needs to understand what went wrong
@@ -94,22 +94,22 @@ export const updUserId = async (req: Request, res: Response): Promise<Response> 
 }
 export const updTodoId = async (req: Request, res: Response): Promise<Response> => {
     const userRepo = getRepository(User)
-    const user = await userRepo.findOne(req.params.id)
+    const user = await userRepo.findOne(req.params.userid)
     if (!user) throw new Exception("User does not exist")
 
     if (!req.body.done) throw new Exception("Please provide if todo is done")
 
     const todoRepo = getRepository(Todos)
-    const todo = await todoRepo.find({relations: ["user"], where: { user: req.params.userid,todo_id: req.params.todoid}})
+    const todo = await todoRepo.find({relations: ["user"], where: { user: req.params.userid, todo_id:req.params.todoid}})
     if (!todo.length) throw new Exception("Todo does not exist") 
-    req.body.date_modified =  'CURRENT_TIMESTAMP';  
-    const results = await todoRepo.update(user,req.body).then(() => {            
+    req.body.date_modified =  moment().format();  
+    const results = await todoRepo.update(req.params.todoid,req.body).then(() => {            
             let response = {
                 message: "Todo updated!",
                 state: true
             }      
             return res.json(response);      
-    });
+    })
     return res.json(todo);
 }
 

@@ -46,12 +46,16 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 exports.__esModule = true;
 exports.delTodoId = exports.updTodoId = exports.updUserId = exports.delUserId = exports.getUserId = exports.getTodos = exports.createTodo = exports.getUsers = exports.createUser = void 0;
 var typeorm_1 = require("typeorm"); // getRepository"  traer una tabla de la base de datos asociada al objeto
 var User_1 = require("./entities/User");
 var Todos_1 = require("./entities/Todos");
 var utils_1 = require("./utils");
+var moment_1 = __importDefault(require("moment"));
 var createUser = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var userRepo, user, newUser, results;
     return __generator(this, function (_a) {
@@ -216,7 +220,7 @@ var updTodoId = function (req, res) { return __awaiter(void 0, void 0, void 0, f
         switch (_a.label) {
             case 0:
                 userRepo = typeorm_1.getRepository(User_1.User);
-                return [4 /*yield*/, userRepo.findOne(req.params.id)];
+                return [4 /*yield*/, userRepo.findOne(req.params.userid)];
             case 1:
                 user = _a.sent();
                 if (!user)
@@ -229,8 +233,8 @@ var updTodoId = function (req, res) { return __awaiter(void 0, void 0, void 0, f
                 todo = _a.sent();
                 if (!todo.length)
                     throw new utils_1.Exception("Todo does not exist");
-                req.body.date_modified = 'CURRENT_TIMESTAMP';
-                return [4 /*yield*/, todoRepo.update(user, req.body).then(function () {
+                req.body.date_modified = moment_1["default"]().format();
+                return [4 /*yield*/, todoRepo.update(req.params.todoid, req.body).then(function () {
                         var response = {
                             message: "Todo updated!",
                             state: true
