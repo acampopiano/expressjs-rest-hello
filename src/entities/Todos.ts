@@ -9,7 +9,8 @@ export class Todos extends BaseEntity {
     todo_id: number;
     @Column()
     description: string;
-    @Column()
+    @Column( {type: Boolean,
+    default: false})
     done: Boolean;
     @Column('timestamp with time zone', { nullable: false, default: () => 'CURRENT_TIMESTAMP' })
     date_created: Date;

@@ -41,7 +41,8 @@ var Todos = /** @class */ (function (_super) {
         __metadata("design:type", String)
     ], Todos.prototype, "description");
     __decorate([
-        typeorm_1.Column(),
+        typeorm_1.Column({ type: Boolean,
+            "default": false }),
         __metadata("design:type", Boolean)
     ], Todos.prototype, "done");
     __decorate([

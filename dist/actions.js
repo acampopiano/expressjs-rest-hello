@@ -47,7 +47,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-exports.delTodoId = exports.updUserId = exports.delUserId = exports.getUserId = exports.getTodos = exports.createTodo = exports.getUsers = exports.createUser = void 0;
+exports.delTodoId = exports.updTodoId = exports.updUserId = exports.delUserId = exports.getUserId = exports.getTodos = exports.createTodo = exports.getUsers = exports.createUser = void 0;
 var typeorm_1 = require("typeorm"); // getRepository"  traer una tabla de la base de datos asociada al objeto
 var User_1 = require("./entities/User");
 var Todos_1 = require("./entities/Todos");
@@ -210,6 +210,40 @@ var updUserId = function (req, res) { return __awaiter(void 0, void 0, void 0, f
     });
 }); };
 exports.updUserId = updUserId;
+var updTodoId = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var userRepo, user, todoRepo, todo, results;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                userRepo = typeorm_1.getRepository(User_1.User);
+                return [4 /*yield*/, userRepo.findOne(req.params.id)];
+            case 1:
+                user = _a.sent();
+                if (!user)
+                    throw new utils_1.Exception("User does not exist");
+                if (!req.body.done)
+                    throw new utils_1.Exception("Please provide if todo is done");
+                todoRepo = typeorm_1.getRepository(Todos_1.Todos);
+                return [4 /*yield*/, todoRepo.find({ relations: ["user"], where: { user: req.params.userid, todo_id: req.params.todoid } })];
+            case 2:
+                todo = _a.sent();
+                if (!todo.length)
+                    throw new utils_1.Exception("Todo does not exist");
+                req.body.date_modified = 'CURRENT_TIMESTAMP';
+                return [4 /*yield*/, todoRepo.update(user, req.body).then(function () {
+                        var response = {
+                            message: "Todo updated!",
+                            state: true
+                        };
+                        return res.json(response);
+                    })];
+            case 3:
+                results = _a.sent();
+                return [2 /*return*/, res.json(todo)];
+        }
+    });
+}); };
+exports.updTodoId = updTodoId;
 var delTodoId = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var userRepo, user, todoRepo, todo, results;
     return __generator(this, function (_a) {
